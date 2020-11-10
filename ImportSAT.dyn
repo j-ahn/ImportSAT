@@ -1,0 +1,699 @@
+{
+  "Uuid": "4d8bbac3-6022-4a33-abfa-4871c5cadd2f",
+  "IsCustomNode": false,
+  "Description": null,
+  "Name": "ImportSAT",
+  "ElementResolver": {
+    "ResolutionMap": {}
+  },
+  "Inputs": [],
+  "Outputs": [],
+  "Nodes": [
+    {
+      "ConcreteType": "CoreNodeModels.Input.Directory, CoreNodeModels",
+      "HintPath": "C:\\Users\\Jiwoo Ahn\\OneDrive - Pells Sullivan Meynink\\Desktop\\Rhino Inside Revit\\Sample Model For Jiwoo",
+      "InputValue": "C:\\Users\\Jiwoo Ahn\\OneDrive - Pells Sullivan Meynink\\Desktop\\Rhino Inside Revit\\Sample Model For Jiwoo",
+      "NodeType": "ExtensionNode",
+      "Id": "e3e1b41329d547ad850d1aec3a8d1143",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "e989ad13286c4e39a4ff02b2e693561a",
+          "Name": "",
+          "Description": "Directory",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows you to select a directory on the system to get its path"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.DirectoryObject, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "3d92e16d09ca40cb9480ed87f0071ab3",
+      "Inputs": [
+        {
+          "Id": "b14246393b034e38b53a27b82cf2623f",
+          "Name": "path",
+          "Description": "Path to the directory.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "6218a88ec93648f98f6c13777f44fb89",
+          "Name": "directory",
+          "Description": "Directory object.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Creates a directory object from a path"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"*.rfa\";",
+      "Id": "dc07a59e10df45f1b545204ca97b2b1d",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "31a0692f73b74f5a83bb3a10adf4fd6e",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.IO.FileSystem.GetDirectoryContents@var,string,bool",
+      "Id": "4204597829f94270890700db886e22da",
+      "Inputs": [
+        {
+          "Id": "137296fb59b54f4682e8bbb92b8e13ab",
+          "Name": "directory",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "49e7aeca958348348a9638338a269583",
+          "Name": "searchString",
+          "Description": "string\nDefault value : \"*.*\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "60cb753573484fc6a34b9350b6f5afd1",
+          "Name": "includeSubdirectories",
+          "Description": "bool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "93148c3f6dbd407481077f7b6fa28e40",
+          "Name": "files",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "ffdbc10a925b40b0b1a626a8e36223b6",
+          "Name": "directories",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "FileSystem.GetDirectoryContents (directory: var, searchString: string = \"*.*\", includeSubdirectories: bool = false): var[]..[]"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": false,
+      "Id": "254be18602ca42d4985e50ec101e8eed",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "2dce5c57b471489db1f65f86c2b14f86",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    },
+    {
+      "ConcreteType": "PythonNodeModels.PythonNode, PythonNodeModels",
+      "NodeType": "PythonScriptNode",
+      "Code": "# Load the Python Standard and DesignScript Libraries\r\nimport System\r\nimport sys\r\nimport clr\r\nclr.AddReference('ProtoGeometry')\r\nfrom Autodesk.DesignScript.Geometry import *\r\nfrom System.Collections.Generic import *\r\n\r\nclr.AddReference(\"RevitAPI\")\r\nimport Autodesk\r\nfrom Autodesk.Revit.DB import *\r\nfrom Autodesk.Revit.DB import Transaction\r\n\r\nclr.AddReference(\"RevitNodes\")\r\nimport Revit\r\nclr.ImportExtensions(Revit.GeometryConversion)\r\nclr.ImportExtensions(Revit.Elements)\r\n\r\nclr.AddReference(\"RevitServices\")\r\nimport RevitServices\r\nfrom RevitServices.Persistence import DocumentManager\r\nfrom RevitServices.Transactions import TransactionManager\r\n\r\nclr.AddReference('DSCoreNodes')\r\nfrom DSCore import *\r\n\r\n# Get doc, uiapp and app\r\ndoc = DocumentManager.Instance.CurrentDBDocument\r\nuiapp = DocumentManager.Instance.CurrentUIApplication\r\napp = uiapp.Application\r\n\r\n# input .rfa file paths\r\nRFAfilepaths = IN[0]\r\n# Input .sat file paths\r\nSATfilepaths = IN[1]\r\nSATfilepaths_name = [i[:-4] for i in SATfilepaths]\r\n\r\n# SAT Import options\r\nSAT_IOption = SATImportOptions()\r\nSAT_IOption.VisibleLayersOnly = True\r\nSAT_IOption.Placement = ImportPlacement.Origin\r\nSAT_IOption.ColorMode = ImportColorMode.Preserved\r\nSAT_IOption.Unit = ImportUnit.Default\r\n# Save as options\r\nSave_Option = SaveAsOptions()\r\nSave_Option.OverwriteExistingFile = True\r\nSave_Option.Compact = True\r\nSave_Option.MaximumBackups = 1\r\n\r\nTransactionManager.Instance.ForceCloseTransaction()\r\n\r\n# list of updated .rfa files\r\nupdated = []\r\n\r\nfor RFAfilepath in RFAfilepaths:\r\n\tRFAfilepath_name = RFAfilepath[:-4]\r\n\tif RFAfilepath_name in SATfilepaths_name:\r\n\t\t# Find corresponding SAT filepath\r\n\t\tSATfilepath = SATfilepaths[SATfilepaths_name.index(RFAfilepath_name)]\r\n\t\t\r\n\t\t# Open .rfa file\r\n\t\tRFAopen = app.OpenDocumentFile(RFAfilepath)\r\n\t\t\r\n\t\t# Start transaction\r\n\t\ttrans = Transaction(RFAopen, RFAfilepath_name)\r\n\t\ttrans.Start()\r\n\t\t\r\n\t\t# Get all elements from open .rfa document\r\n\t\tcollector = FilteredElementCollector(RFAopen)\r\n\t\t\r\n\t\t# delete existing elements\r\n\t\tallElements = collector.OfCategory(BuiltInCategory.OST_GenericModel).ToElements()\r\n\t\tfor i in allElements:\r\n\t\t\tRFAopen.Delete(i.Id)\r\n\t\t\t\r\n\t\t# Import .sat file\r\n\t\t#RFAopen.Import(SATfilepath, SAT_IOption, view)\r\n\t\tshapeImporter = ShapeImporter()\r\n\t\tshapeImporter.InputFormat = ShapeImporterSourceFormat.SAT\r\n\t\tshapes = shapeImporter.Convert(RFAopen, SATfilepath)\r\n\t\tdsImportedSat = DirectShape.CreateElement(RFAopen, ElementId(BuiltInCategory.OST_GenericModel))\r\n\t\tdsImportedSat.SetShape(shapes)\r\n\t\t\r\n\t\t# Commit transaction changes\r\n\t\ttrans.Commit()\r\n\t\ttrans.Dispose()\r\n\t\t\r\n\t\t# Save .rfa file\r\n\t\tRFAopen.SaveAs(RFAfilepath, Save_Option)\r\n\t\tRFAopen.Close(False)\r\n\t\tupdated.append(RFAfilepath)\r\n\r\n#Save resulting Revit file to the destination path:\r\nOUT = updated\r\n\r\n\r\n",
+      "VariableInputPorts": true,
+      "Id": "ee9913cdd14d4fd1b7366a6bb91df2ff",
+      "Inputs": [
+        {
+          "Id": "a39f0c2d1b7f4cb0b0c1ba228d25cc8f",
+          "Name": "IN[0]",
+          "Description": "Input #0",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "571fb606159540c8bb4576c792dfd80f",
+          "Name": "IN[1]",
+          "Description": "Input #1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "39e14920953d4766b9a892424569452d",
+          "Name": "IN[2]",
+          "Description": "Input #2",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "629f2835b2cc46a6837ff508f6dcab11",
+          "Name": "OUT",
+          "Description": "Result of the python script",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Runs an embedded IronPython script."
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.ZeroTouch.DSFunction, DynamoCore",
+      "NodeType": "FunctionNode",
+      "FunctionSignature": "DSCore.IO.FileSystem.GetDirectoryContents@var,string,bool",
+      "Id": "024d832952314cc3bbd9e8b4f3eabc36",
+      "Inputs": [
+        {
+          "Id": "2f2cdcad06a043edbdde09cc13c60e01",
+          "Name": "directory",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5ae49198725444e49eeebd8cafcf07a4",
+          "Name": "searchString",
+          "Description": "string\nDefault value : \"*.*\"",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "13708e6f11c1416d9bfb6ee1b7d2d18b",
+          "Name": "includeSubdirectories",
+          "Description": "bool\nDefault value : false",
+          "UsingDefaultValue": true,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "b2d0ac6983e148cbab5da28aa7e8aa56",
+          "Name": "files",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        },
+        {
+          "Id": "5540679bccab4f1984eec043f703e045",
+          "Name": "directories",
+          "Description": "var",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "FileSystem.GetDirectoryContents (directory: var, searchString: string = \"*.*\", includeSubdirectories: bool = false): var[]..[]"
+    },
+    {
+      "ConcreteType": "Dynamo.Graph.Nodes.CodeBlockNodeModel, DynamoCore",
+      "NodeType": "CodeBlockNode",
+      "Code": "\"*.sat\";",
+      "Id": "4cadf30a4be54150aa8afb3a9ea47046",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "dfe778b6c15f4b11a5077b8f2c06bc52",
+          "Name": "",
+          "Description": "Value of expression at line 1",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Allows for DesignScript code to be authored directly"
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "044cdb13c0cb4b88b9934ce6d28f1df2",
+      "Inputs": [
+        {
+          "Id": "c0423399664245b399247bad72c00475",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "f3dd87721ade4e6ba5ec67e24339cde2",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "5c7a28640705481bb19db90ab73e6655",
+      "Inputs": [
+        {
+          "Id": "6ba090c769a24dee9d562ffe2181897e",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c391b771291e45209aabf6ab93bc9b7f",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Watch, CoreNodeModels",
+      "NodeType": "ExtensionNode",
+      "Id": "49476ce96a7544ce983ea6a699cd5fad",
+      "Inputs": [
+        {
+          "Id": "bafb3846c5e54b70b649d83111542cfa",
+          "Name": "",
+          "Description": "Node to evaluate.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Outputs": [
+        {
+          "Id": "c4219cba6a274ad3aabed92012309cfe",
+          "Name": "",
+          "Description": "Watch contents.",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Auto",
+      "Description": "Visualize the output of node."
+    },
+    {
+      "ConcreteType": "CoreNodeModels.Input.BoolSelector, CoreNodeModels",
+      "NodeType": "BooleanInputNode",
+      "InputValue": true,
+      "Id": "acbd89952a9b415ba92c51db476b6be4",
+      "Inputs": [],
+      "Outputs": [
+        {
+          "Id": "75078c8895264034a0f530218876bd6c",
+          "Name": "",
+          "Description": "Boolean",
+          "UsingDefaultValue": false,
+          "Level": 2,
+          "UseLevels": false,
+          "KeepListStructure": false
+        }
+      ],
+      "Replication": "Disabled",
+      "Description": "Selection between a true and false."
+    }
+  ],
+  "Connectors": [
+    {
+      "Start": "e989ad13286c4e39a4ff02b2e693561a",
+      "End": "b14246393b034e38b53a27b82cf2623f",
+      "Id": "4fe4b0ae74e447839a22585b2307d647"
+    },
+    {
+      "Start": "6218a88ec93648f98f6c13777f44fb89",
+      "End": "137296fb59b54f4682e8bbb92b8e13ab",
+      "Id": "1c813820ca2d47aeb16357adeba78681"
+    },
+    {
+      "Start": "6218a88ec93648f98f6c13777f44fb89",
+      "End": "2f2cdcad06a043edbdde09cc13c60e01",
+      "Id": "5ed918a3bad34920962be076c4c483fa"
+    },
+    {
+      "Start": "31a0692f73b74f5a83bb3a10adf4fd6e",
+      "End": "49e7aeca958348348a9638338a269583",
+      "Id": "e04514937114429cb77a38cbb80ac456"
+    },
+    {
+      "Start": "93148c3f6dbd407481077f7b6fa28e40",
+      "End": "a39f0c2d1b7f4cb0b0c1ba228d25cc8f",
+      "Id": "5cfbae24d5f944b1bb2f52383305c2f3"
+    },
+    {
+      "Start": "93148c3f6dbd407481077f7b6fa28e40",
+      "End": "6ba090c769a24dee9d562ffe2181897e",
+      "Id": "c0cac86566b946a68d11678092da4ffc"
+    },
+    {
+      "Start": "2dce5c57b471489db1f65f86c2b14f86",
+      "End": "60cb753573484fc6a34b9350b6f5afd1",
+      "Id": "d1dd48801ae844a8b7192e8ce40de970"
+    },
+    {
+      "Start": "2dce5c57b471489db1f65f86c2b14f86",
+      "End": "13708e6f11c1416d9bfb6ee1b7d2d18b",
+      "Id": "e3b9853b1f5a4e1e9627bd6e42695298"
+    },
+    {
+      "Start": "629f2835b2cc46a6837ff508f6dcab11",
+      "End": "c0423399664245b399247bad72c00475",
+      "Id": "b5aaf37256134c178974e5f1cb640df5"
+    },
+    {
+      "Start": "b2d0ac6983e148cbab5da28aa7e8aa56",
+      "End": "571fb606159540c8bb4576c792dfd80f",
+      "Id": "f2809eb14c9447f7abdd29b98769d2b6"
+    },
+    {
+      "Start": "b2d0ac6983e148cbab5da28aa7e8aa56",
+      "End": "bafb3846c5e54b70b649d83111542cfa",
+      "Id": "0573dc92d4f2486ca03eefd9a074f15e"
+    },
+    {
+      "Start": "dfe778b6c15f4b11a5077b8f2c06bc52",
+      "End": "5ae49198725444e49eeebd8cafcf07a4",
+      "Id": "11c2dddc6acb4399b132298fbad840f2"
+    },
+    {
+      "Start": "75078c8895264034a0f530218876bd6c",
+      "End": "39e14920953d4766b9a892424569452d",
+      "Id": "7b5d02e9bea9414482f1a3e16a491bf4"
+    }
+  ],
+  "Dependencies": [],
+  "NodeLibraryDependencies": [],
+  "Bindings": [],
+  "View": {
+    "Dynamo": {
+      "ScaleFactor": 1.0,
+      "HasRunWithoutCrash": true,
+      "IsVisibleInDynamoLibrary": true,
+      "Version": "2.3.0.5885",
+      "RunType": "Manual",
+      "RunPeriod": "1000"
+    },
+    "Camera": {
+      "Name": "Background Preview",
+      "EyeX": -17.0,
+      "EyeY": 24.0,
+      "EyeZ": 50.0,
+      "LookX": 12.0,
+      "LookY": -13.0,
+      "LookZ": -58.0,
+      "UpX": 0.0,
+      "UpY": 1.0,
+      "UpZ": 0.0
+    },
+    "NodeViews": [
+      {
+        "ShowGeometry": true,
+        "Name": "Directory Path",
+        "Id": "e3e1b41329d547ad850d1aec3a8d1143",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 156.43965086522098,
+        "Y": 376.62931560917445
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Directory From Path",
+        "Id": "3d92e16d09ca40cb9480ed87f0071ab3",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 636.58743435669317,
+        "Y": 243.14919036297778
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "dc07a59e10df45f1b545204ca97b2b1d",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 703.21220825446608,
+        "Y": 329.10371900157077
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "FileSystem.GetDirectoryContents",
+        "Id": "4204597829f94270890700db886e22da",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 964.88373920652009,
+        "Y": 238.59046057397279
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Boolean",
+        "Id": "254be18602ca42d4985e50ec101e8eed",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 667.39153873204418,
+        "Y": 417.97249169254076
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Python Script",
+        "Id": "ee9913cdd14d4fd1b7366a6bb91df2ff",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1677.6690881355687,
+        "Y": 477.10787590152859
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "FileSystem.GetDirectoryContents",
+        "Id": "024d832952314cc3bbd9e8b4f3eabc36",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 965.77672703293388,
+        "Y": 379.67640869851766
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Code Block",
+        "Id": "4cadf30a4be54150aa8afb3a9ea47046",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 702.94677855502437,
+        "Y": 480.18966712611586
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Updated .rfa files",
+        "Id": "044cdb13c0cb4b88b9934ce6d28f1df2",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 2014.87134900823,
+        "Y": 474.82919330553659
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "All .rfa files in directory",
+        "Id": "5c7a28640705481bb19db90ab73e6655",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1648.9046989557289,
+        "Y": 685.35439229655788
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "All .sat files in directory",
+        "Id": "49476ce96a7544ce983ea6a699cd5fad",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 1942.012969765447,
+        "Y": 685.04023694430919
+      },
+      {
+        "ShowGeometry": true,
+        "Name": "Delete Existing Geometry?",
+        "Id": "acbd89952a9b415ba92c51db476b6be4",
+        "IsSetAsInput": false,
+        "IsSetAsOutput": false,
+        "Excluded": false,
+        "X": 311.66839885176415,
+        "Y": 532.79221084029564
+      }
+    ],
+    "Annotations": [
+      {
+        "Id": "e11daa5c76b24291bc70de76b9616334",
+        "Title": "Input #1\r\nDirectory with multiple revit (.rfa) files",
+        "Nodes": [
+          "e3e1b41329d547ad850d1aec3a8d1143"
+        ],
+        "Left": 146.43965086522098,
+        "Top": 280.62931560917445,
+        "Width": 361.0,
+        "Height": 190.0,
+        "FontSize": 24.0,
+        "InitialTop": 376.62931560917445,
+        "InitialHeight": 145.0,
+        "TextblockHeight": 86.0,
+        "Background": "#FFE8F7AD"
+      },
+      {
+        "Id": "e4fa8fbbfe7c4066a7114aac0f498849",
+        "Title": "Get file directories of .rfa and .sat files",
+        "Nodes": [
+          "3d92e16d09ca40cb9480ed87f0071ab3",
+          "dc07a59e10df45f1b545204ca97b2b1d",
+          "4204597829f94270890700db886e22da",
+          "254be18602ca42d4985e50ec101e8eed",
+          "024d832952314cc3bbd9e8b4f3eabc36",
+          "4cadf30a4be54150aa8afb3a9ea47046"
+        ],
+        "Left": 626.58743435669317,
+        "Top": 199.59046057397279,
+        "Width": 665.18929267624071,
+        "Height": 373.59920655214307,
+        "FontSize": 24.0,
+        "InitialTop": 238.59046057397279,
+        "InitialHeight": 386.59920655214307,
+        "TextblockHeight": 29.0,
+        "Background": "#FFB9F9E1"
+      },
+      {
+        "Id": "fe544b6cce90417c8b5f28f130f200d0",
+        "Title": "Python script to:\r\n1) Loop through .rfa files in directory\r\n2) If there is a corresponding .sat file\r\n\t2.1) Open .rfa open\r\n\t2.2) Delete all geometry inside\r\n\t2.3) Import .sat file\r\n\t2.4) Save .rfa file",
+        "Nodes": [
+          "ee9913cdd14d4fd1b7366a6bb91df2ff",
+          "044cdb13c0cb4b88b9934ce6d28f1df2"
+        ],
+        "Left": 1667.6690881355687,
+        "Top": 262.82919330553659,
+        "Width": 647.20226087266133,
+        "Height": 391.0,
+        "FontSize": 24.0,
+        "InitialTop": 474.82919330553659,
+        "InitialHeight": 149.88654483928337,
+        "TextblockHeight": 202.0,
+        "Background": "#FF48B9FF"
+      },
+      {
+        "Id": "3cb189e4a638490e89c5b6351de971ae",
+        "Title": "Input #2",
+        "Nodes": [
+          "acbd89952a9b415ba92c51db476b6be4"
+        ],
+        "Left": 301.66839885176415,
+        "Top": 493.79221084029564,
+        "Width": 194.0,
+        "Height": 107.0,
+        "FontSize": 24.0,
+        "InitialTop": 532.79221084029564,
+        "InitialHeight": 98.0,
+        "TextblockHeight": 29.0,
+        "Background": "#FFE8F7AD"
+      },
+      {
+        "Id": "87bd6e0751a74cadb03749ddc434e13b",
+        "Title": "Log",
+        "Nodes": [
+          "5c7a28640705481bb19db90ab73e6655",
+          "49476ce96a7544ce983ea6a699cd5fad"
+        ],
+        "Left": 1638.9046989557289,
+        "Top": 646.04023694430919,
+        "Width": 603.10827080971808,
+        "Height": 233.31415535224869,
+        "FontSize": 24.0,
+        "InitialTop": 685.04023694430919,
+        "InitialHeight": 209.0,
+        "TextblockHeight": 29.0,
+        "Background": "#FF48B9FF"
+      }
+    ],
+    "X": -67.463934411239279,
+    "Y": 89.894506279485768,
+    "Zoom": 0.64379220255443814
+  }
+}
